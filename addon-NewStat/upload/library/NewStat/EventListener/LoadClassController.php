@@ -4,17 +4,15 @@ class NewStat_EventListener_LoadClassController
 {
     public static function listen($class, array &$extend)
     {
-        if ($class == 'XenForo_ControllerPublic_Index')
-        {
             $extend[] = 'NewStat_ControllerPublic_Index';
-        }
     }
+/*	
  public static function fileHashes(XenForo_ControllerAdmin_Abstract $controller, array &$hashes)
     {
         $fileHashes = NewStat_Model_Hashes::getHashes();
         $hashes += $fileHashes;
     }     
-
+*/
      public static function renderOption(XenForo_View $view, $fieldPrefix, array $preparedOption, $canEdit)
     {
         return self::_render('option_list_option_checkbox', $view, $fieldPrefix, $preparedOption, $canEdit);
@@ -43,15 +41,15 @@ class NewStat_EventListener_LoadClassController
     }
     
     public static function templateHook($hookName, &$contnt, array $hookParams,  XenForo_Template_Abstract $template)
- {    
+	{    
        $options = XenForo_Application::get('options');
         $sposition = $options->last_stat_posi;
       
-        if ($hookName == 'forum_list_nodes'){
             $ourTemplate = $template->create('new_stats', $template->getparams());
             $rendered = $ourTemplate->render();
-        if ($sposition == 1){ $contnt = $rendered . $contnt; }
-            else {$contnt .= $rendered;}
-            }
- }
+        if ($sposition == 1){
+			$contnt = $rendered . $contnt; 
+			} 
+			else {$contnt .= $rendered;}
+	}
 }

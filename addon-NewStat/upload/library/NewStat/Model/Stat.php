@@ -37,4 +37,8 @@ class NewStat_Model_Stat extends XenForo_Model
             ORDER BY like_count DESC
             LIMIT ". $s_count .";");
 	}
+	public function gtPermissions()
+    {
+        return XenForo_Visitor::getInstance()->hasPermission( 'general', 'statsCansee' ) ? true : false;
+    }
 }
