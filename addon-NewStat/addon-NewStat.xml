@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="NewStat" title="إحصائيات المنتدى" version_string="2.2" version_id="5" url="http://www.xf-ar.com" install_callback_class="NewStat_Install" install_callback_method="installer" uninstall_callback_class="NewStat_Install" uninstall_callback_method="uninstall">
+<addon addon_id="NewStat" title="إحصائيات المنتدى" version_string="2.5" version_id="6" url="http://www.shababadrar.net/vb" install_callback_class="NewStat_Install" install_callback_method="installer" uninstall_callback_class="NewStat_Install" uninstall_callback_method="uninstall">
   <admin_navigation>
     <navigation navigation_id="NewStat" parent_navigation_id="options" display_order="5" link="options/list/NewStat" admin_permission_id="option" debug_only="0" hide_no_children="0"/>
   </admin_navigation>
   <admin_permissions/>
   <admin_style_properties/>
   <admin_templates>
-    <template title="abStats"><![CDATA[<div id="copyright" style="text-align:center;margin-top:20px;" dir="rtl">
+    <template title="abStats"><![CDATA[<div style="text-align:center;margin-top:20px;">
 <img src="styles/default/xenforo/smilies/thumbsup.png"  alt='' />&nbsp;  
-<a href="http://www.xf-ar.com/" target="_blank" class="Tooltip" title="برمجة بوسعيد مصطفى">:: XF-AR FORUM ::</a> &nbsp;
+<a href="https://github.com/boussaid" target="_blank" class="Tooltip" title="برمجة بوسعيد مصطفى">My github</a> &nbsp;
 <img src="styles/default/xenforo/smilies/thumbsup.png"  alt='' />
 </div>]]></template>
     <template title="option_list_option_multi_stat"><![CDATA[<xen:selectunit label="{$preparedOption.title}" name="{$fieldPrefix}[{$preparedOption.option_id}]" value="{xen:raw $preparedOption.option_value}"
@@ -24,6 +24,7 @@ hint="{$preparedOption.hint}" size="10" multiple="true">
   <admin_template_modifications/>
   <code_events/>
   <code_event_listeners>
+    <listener event_id="file_health_check" execute_order="10" callback_class="NewStat_EventListener_LoadClassController" callback_method="fileHashes" active="1" hint="" description="Check Files"/>
     <listener event_id="load_class_controller" execute_order="10" callback_class="NewStat_EventListener_LoadClassController" callback_method="listen" active="1" hint="XenForo_ControllerPublic_Forum" description=""/>
     <listener event_id="template_create" execute_order="10" callback_class="NewStat_EventListener_LoadClassController" callback_method="templateCreate" active="1" hint="" description="Template pre-cache for NewStat"/>
     <listener event_id="template_hook" execute_order="10" callback_class="NewStat_EventListener_LoadClassController" callback_method="templateHook" active="1" hint="forum_list_nodes" description="Template hooks for NewStat"/>
@@ -34,12 +35,18 @@ hint="{$preparedOption.hint}" size="10" multiple="true">
   <email_templates/>
   <email_template_modifications/>
   <optiongroups>
-    <group group_id="NewStat" display_order="13000" debug_only="0"/>
+    <group group_id="NewStat" display_order="1300000" debug_only="0"/>
     <option option_id="abStats" edit_format="template" data_type="string" can_backup="1">
       <default_value></default_value>
       <edit_format_params>abStats</edit_format_params>
       <sub_options></sub_options>
       <relation group_id="NewStat" display_order="10000"/>
+    </option>
+    <option option_id="last_stat_Prefix" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="NewStat" display_order="120"/>
     </option>
     <option option_id="last_stat_avatar" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
@@ -86,7 +93,7 @@ step=10</edit_format_params>
       <edit_format_params>1 = {xen:phrase top}
 2 = {xen:phrase bottom}</edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="NewStat" display_order="120"/>
+      <relation group_id="NewStat" display_order="130"/>
     </option>
     <option option_id="last_stat_view" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>0</default_value>
@@ -103,8 +110,8 @@ step=10</edit_format_params>
   <phrases>
     <phrase title="admin_navigation_NewStat" version_id="3" version_string="2.0"><![CDATA[آخر اﻹحصائيات]]></phrase>
     <phrase title="cron_entry_NewStat" version_id="3" version_string="2.0"><![CDATA[آخر اﻹحصائيات]]></phrase>
-    <phrase title="option_abStats" version_id="1" version_string="1.0"><![CDATA[abautme]]></phrase>
-    <phrase title="option_abStats_explain" version_id="1" version_string="1.0"><![CDATA[]]></phrase>
+    <phrase title="option_abStats" version_id="5" version_string="2.2"><![CDATA[abautme]]></phrase>
+    <phrase title="option_abStats_explain" version_id="5" version_string="2.2"><![CDATA[]]></phrase>
     <phrase title="option_group_NewStat" version_id="1" version_string="1.0"><![CDATA[إحصائية آخر مواضيع المنتدى]]></phrase>
     <phrase title="option_group_NewStat_description" version_id="1" version_string="1.0"><![CDATA[إحصائية متعددة لعرض آخر المواضيع و الأعضاء]]></phrase>
     <phrase title="option_last_stat_avatar" version_id="1" version_string="1.0"><![CDATA[عرض الصورة الرمزية للعضو]]></phrase>
@@ -118,18 +125,16 @@ step=10</edit_format_params>
     <phrase title="option_last_stat_group" version_id="4" version_string="2.1"><![CDATA[المجموعات المسموح لها]]></phrase>
     <phrase title="option_last_stat_group_explain" version_id="4" version_string="2.1"><![CDATA[إختر المجموعات المسموح لها مشاهدة الإحصائيات]]></phrase>
     <phrase title="option_last_stat_on" version_id="1" version_string="1.0"><![CDATA[تفعيل المنتج]]></phrase>
-    <phrase title="option_last_stat_on_explain" version_id="3" version_string="2.0"><![CDATA[لا تنسى إعطاء التصاريح لمجموعات الأعضاء من تراخيص المنتدى]]></phrase>
+    <phrase title="option_last_stat_on_explain" version_id="6" version_string="2.5"><![CDATA[لا تنسى إعطاء التصاريح لمجموعات الأعضاء.]]></phrase>
     <phrase title="option_last_stat_posi" version_id="1" version_string="1.0"><![CDATA[مكان ظهور الإحصائية]]></phrase>
     <phrase title="option_last_stat_posi_explain" version_id="1" version_string="1.0"><![CDATA[عرض الإحصائيات أعلى أو أسفل الأقسام]]></phrase>
+    <phrase title="option_last_stat_Prefix" version_id="5" version_string="2.2"><![CDATA[عرض بادئة المواضيع]]></phrase>
+    <phrase title="option_last_stat_Prefix_explain" version_id="5" version_string="2.2"><![CDATA[فعل هذا الخيار إذا كنت تستخدم بادئات المواضيع و تريد ظهورها بجانب عنوان الموضوع]]></phrase>
     <phrase title="option_last_stat_view" version_id="1" version_string="1.0"><![CDATA[عرض تلميح معاينة المواضيع]]></phrase>
     <phrase title="option_last_stat_view_explain" version_id="3" version_string="2.0"><![CDATA[إفتراضيا مكان التلميح ستعرض معلومات مفصلة عن الموضوع<br />
 فعل هذا الخيار لتفعيل المعاينة التلقائية للموضوع بمجرد وضع الفأرة عليه]]></phrase>
   </phrases>
-  <route_prefixes>
-    <route_type type="public">
-      <prefix original_prefix="stats" class="NewStat_Route_Forum" build_link="all"/>
-    </route_type>
-  </route_prefixes>
+  <route_prefixes/>
   <style_properties/>
   <templates>
     <template title="new_stat" version_id="1" version_string="1.0"><![CDATA[<xen:if is="{$stats}">
@@ -156,12 +161,12 @@ step=10</edit_format_params>
     </tbody>
 </table>
 </div></xen:if>]]></template>
-    <template title="new_stats" version_id="4" version_string="2.1"><![CDATA[<xen:if is="{$newStats}">
+    <template title="new_stats" version_id="6" version_string="2.5"><![CDATA[<xen:if is="{$newStats}">
 <xen:include template="preview_tooltip"/>
 <xen:require css="new_stats.css" />
-<div class="sectionMain">
+<div class="sectionMain visibleResponsiveFull">
 <h3 class="heading">
-            <a href="{xen:link 'find-new/threads'}">{xen:phrase whats_new}</a>
+            <a href="{xen:link find-new/posts, '', 'recent=1'}">{xen:phrase recent_posts}</a>
             
         </h3>
 
@@ -170,7 +175,7 @@ step=10</edit_format_params>
     <tr>
 <td style="border-left:1px dotted">
 
-<table class="dataTable" id="">
+<table class="dataTable">
     <tbody>
     <tr class="dataRow">
         <th>{xen:phrase newest_members}</th>
@@ -202,8 +207,7 @@ step=10</edit_format_params>
 <table class="dataTable">
     <tbody>
     <tr class="dataRow">
-        <th>{xen:phrase most_likes}</th>
-        
+        <th>{xen:phrase most_likes}</th>       
     </tr>
     <xen:foreach loop="$newStats.likedUsers" value="$usr">
 <xen:include template="new_stats_tlikuser"/>
@@ -214,7 +218,7 @@ step=10</edit_format_params>
 
 <td>
 
-<table class="dataTable" >
+<table class="dataTable">
     <tbody>
     <tr class="dataRow">
         <th>{xen:phrase threads}</th>
@@ -234,8 +238,9 @@ step=10</edit_format_params>
 </tbody>
 </table>
 </div></xen:if>]]></template>
-    <template title="new_stats.css" version_id="1" version_string="1.0"><![CDATA[table.dataTable {margin: 0;}
+    <template title="new_stats.css" version_id="6" version_string="2.5"><![CDATA[table.dataTable {margin: 0; width: 100%; box-sizing: border-box; max-width: 100%;}
 table tr:nth-child(even) {background-color: {xen:property primaryLightest};} 
+table tr td {width: auto; box-sizing: border-box; max-width: 100%;}
 .heading {margin-bottom: 0;}
 .usr .avatar img {width: 15px; height: 15px; vertical-align:middle;}]]></template>
     <template title="new_stats_luser" version_id="1" version_string="1.0"><![CDATA[<tr class="dataRow">
@@ -243,10 +248,10 @@ table tr:nth-child(even) {background-color: {xen:property primaryLightest};}
 <xen:avatar user="$user" size="s" img="true" /> -</xen:if>
 <xen:username user="$user" rich="true" class="Tooltip" title="{xen:phrase joined}: {xen:datetime $user.register_date}" />
 </td></tr>]]></template>
-    <template title="new_stats_posts" version_id="3" version_string="2.0"><![CDATA[<tr class="dataRow">
+    <template title="new_stats_posts" version_id="6" version_string="2.5"><![CDATA[<tr class="dataRow">
     <td class="usr">{$i} -<xen:if is="{$xenOptions.last_stat_avatar}">
 <xen:avatar user="$th" size="s" img="true" title="{xen:phrase thread_starter}: {$th.username}" /> -</xen:if>
-&nbsp; <a href="{xen:link threads, $th}" <xen:if is="{$xenOptions.last_stat_view}">class="PreviewTooltip" data-previewUrl="{xen:link threads/preview, $th}"<xen:else />class="Tooltip" title="{$th.threadtitle} | {xen:phrase replies}: {$th.reply_count} | {xen:phrase views}: {$th.view_count} | {xen:phrase thread_starter}: {$th.username}"</xen:if>>{xen:helper snippet, $th.threadtitle, {$xenOptions.last_stat_cut}}</a>
+<xen:if is="{$xenOptions.last_stat_Prefix}">{xen:helper threadPrefix, $th}</xen:if>&nbsp; <a href="{xen:link threads, $th}" <xen:if is="{$xenOptions.last_stat_view}">class="PreviewTooltip" data-previewUrl="{xen:link threads/preview, $th}"<xen:else />class="Tooltip" title="{$th.threadtitle} | {xen:phrase replies}: {$th.reply_count} | {xen:phrase views}: {$th.view_count} | {xen:phrase thread_starter}: {$th.username}"</xen:if>>{xen:helper snippet, $th.threadtitle, {$xenOptions.last_stat_cut}}</a>
         &nbsp;<a href="{xen:link threads/unread, $th}" title="{xen:phrase go_to_first_unread_message}">&#8595;</a></td>
       <td>{xen:datetime $th.post_date}</td>
 
@@ -264,4 +269,5 @@ table tr:nth-child(even) {background-color: {xen:property primaryLightest};}
   </templates>
   <public_template_modifications/>
   <bb_code_media_sites/>
+  <bb_codes/>
 </addon>

@@ -6,13 +6,19 @@ class NewStat_EventListener_LoadClassController
     {
             $extend[] = 'NewStat_ControllerPublic_Index';
     }
-/*	
+    	
  public static function fileHashes(XenForo_ControllerAdmin_Abstract $controller, array &$hashes)
-    {
-        $fileHashes = NewStat_Model_Hashes::getHashes();
-        $hashes += $fileHashes;
-    }     
-*/
+    {    
+        $_hashes = NewStat_Model_Hashes::getHashes();
+
+		foreach ($_hashes AS $path => $hash)
+		{
+			$hashes[$path] = $hash;
+		}
+
+		unset($_hashes);
+	}    
+    
      public static function renderOption(XenForo_View $view, $fieldPrefix, array $preparedOption, $canEdit)
     {
         return self::_render('option_list_option_checkbox', $view, $fieldPrefix, $preparedOption, $canEdit);

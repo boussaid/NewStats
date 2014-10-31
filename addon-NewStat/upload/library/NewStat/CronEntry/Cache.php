@@ -27,7 +27,6 @@ class NewStat_CronEntry_Cache
                 );
 
    XenForo_Model::create('XenForo_Model_DataRegistry')->set('myNewStats', $mynewStats);
-   	$statModel = '';
 	unset($statModel);
     }   
 }

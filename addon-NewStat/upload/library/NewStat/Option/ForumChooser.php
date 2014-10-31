@@ -24,4 +24,5 @@ abstract class NewStat_Option_ForumChooser
             'editLink' => $editLink
         ));
     }
+	
 }

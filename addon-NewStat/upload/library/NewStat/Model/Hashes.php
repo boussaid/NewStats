@@ -1,16 +1,17 @@
 <?php
 
-class LatTh_Model_Hashes
+class NewStat_Model_Hashes
 {
     public static function getHashes()
     {
         return array (
-  'library/LatTh/Model/LatTh.php' => '62d6d8192236a22014ae1cd1fe31267a',
-  'library/LatTh/ControllerPublic/Index.php' => '7feeb1c93b1f87e7a4bce242b4dd8f9c',
-  'library/LatTh/EventListener/LoadClassController.php' => 'e6021d140219e085376b08d4d5340952',
-  'library/LatTh/Option/ForumChooser.php' => '42a38ddb7256471a64b71a90b380a7d9',
-  'library/LatTh/Option/NodeHelper.php' => '83de54af27f60bbd72507cff33cf1260',
-  'library/LatTh/Option/Option.php' => '5f356fae1568d15779c4d8cddab2ca15'
+  'library/NewStat/install.php' => '6570d76bfacf8c9df9372582b42e8f81',
+  'library/NewStat/Model/Stat.php' => 'dda33f7c68231cc0b89e7cf218835cdf',
+  'library/NewStat/ControllerPublic/Index.php' => '93ffefd9fe23f6c46a88d6a878423ea7',
+  'library/NewStat/EventListener/LoadClassController.php' => '22453948bdb7d74ad4c3c35605b6d23b',
+  'library/NewStat/Option/ForumChooser.php' => '623017a0cfe575aacc2921486df34914',
+  'library/NewStat/Option/NodeHelper.php' => 'e174c004fc188c35dbdacf61a89b4793',
+  'library/NewStat/Option/Option.php' => 'bb9dd9f5842f393b36b5ff711e5b2ab1'
 );
     }
 }
